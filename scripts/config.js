@@ -16,6 +16,7 @@ function savePlayerConfig (event) {
     const enteredPlayername = formData.get('playername').trim();
 
     if (!enteredPlayername) {   //extra restriction for name input
-        
+        errorsOutputElement.textContent = 'Please enter a valid name!';
+        return;
     }
 }
