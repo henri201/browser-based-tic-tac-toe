@@ -1,4 +1,4 @@
-// initalize the game
+// initialize the game
 const playerConfigOverlayElement = document.getElementById('config-overlay');
 const backDropElement = document.getElementById('backdrop');
 const formElement = document.querySelector('form');
