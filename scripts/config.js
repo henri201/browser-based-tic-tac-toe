@@ -12,7 +12,7 @@ function closePlayerConfig() {
 
 function savePlayerConfig (event) {
     event.preventDefault();          //prevent the form from reloading the page
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.target); //takes a form and extracts values
     const enteredPlayername = formData.get('playername').trim();
 
     if (!enteredPlayername) {   //extra restriction for name input
