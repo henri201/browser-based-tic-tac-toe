@@ -6,4 +6,8 @@ function startNewGame () {     // dont show the board if there arent valid names
         return;
     }
     gameAreaElement.style.display = 'block';
-}5
+}
+
+function selectGameField(event) {
+    event.target.textcontent;   //where the click occured on teh field
+}
