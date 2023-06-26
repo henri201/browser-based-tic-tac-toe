@@ -2,20 +2,21 @@
 
 function resetGameStatus() {
     activePlayer = 0;
-    currentRound = 0;
+    currentRound = 1;
+    gameIsOver = false;
     gameOverElement.firstElementChild.innerHTML = 'You won, <span id="winner-name">PLAYER NAME</span>';
     gameOverElement.style.display = 'none';
     
     let gameBoardIndex = 0;
-    for (let i=0; i < 3; i++){
+    for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             gameData[i][j] = 0;
-            const gameBoard
-            GameBoardElement.children[gameBoardIndex].textContent = '';
+            const gameBoardItemElement = gameBoardElement.children[gameBoardIndex];
+            gameBoardItemElement.textContent = '';
+            gameBoardItemElement.classList.remove('disabled');
             gameBoardIndex++;
         }
     }
-
 }
 
 function startNewGame () {     // dont show the board if there arent valid names
@@ -24,9 +25,12 @@ function startNewGame () {     // dont show the board if there arent valid names
         return;
     }
 
+    resetGameStatus();
+
     activePlayerNameElement.textContent = players[activePlayer].name;
     gameAreaElement.style.display = 'block';
 }
+
 
 function switchPlayer() {
     if (activePlayer === 0) {
@@ -37,8 +41,11 @@ function switchPlayer() {
     activePlayerNameElement.textContent = players[activePlayer].name;
 }
 
-function selectGameField(event) {
 
+function selectGameField(event) {
+    if (event.target.tagName !== 'LI' || gameIsOver) {
+        return;
+    }
     const selectedField = event.target;
     const selectedColumn = selectedField.dataset.col -1;  //rows/col on board start from '1'
     const selectedRow = selectedField.dataset.row -1;
@@ -50,9 +57,9 @@ function selectGameField(event) {
     event.target.textContent = players[activePlayer].symbol;  //where the click occured, player[0]
     event.target.classList.add('disabled');
 
-
     gameData[selectedRow][selectedColumn] = activePlayer + 1; // players are 1 and 2 , 0 is for none  
     const winnerId = checkForGameOver();
+    
     if (winnerId !== 0) {
         endGame(winnerId);
     }
@@ -60,6 +67,7 @@ function selectGameField(event) {
     currentRound ++;
     switchPlayer();
 }
+
 
 function checkForGameOver() {
     for (let i=0; i < 3; i++) {
@@ -88,7 +96,7 @@ function checkForGameOver() {
         gameData[0][0] > 0 &&
         gameData[0][0] === gameData[1][1] &&
         gameData[1][1] === gameData[2][2]
-    ) {
+        ) {
         return gameData[0][0];
     }
 
@@ -97,7 +105,7 @@ function checkForGameOver() {
         gameData[2][0] > 0 &&
         gameData[2][0] === gameData[1][1] &&
         gameData[1][1] === gameData[0][2]
-    ) {
+        ) {
         return gameData[2][0];
     }
 
@@ -108,6 +116,7 @@ function checkForGameOver() {
 }
 
 function endGame(winnerId) {
+    gameIsOver = true;
     gameOverElement.style.display = 'block';
     //when draw happens
     if (winnerId > 0) {
